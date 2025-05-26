@@ -36,15 +36,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     const consultationForm = document.getElementById("consultationForm");
     if (consultationForm) {
         consultationForm.addEventListener("submit", function(e) {
             e.preventDefault();
             
+            const name = document.getElementById("consultName").value;
+            const email = document.getElementById("consultEmail").value;
+            const phone = document.getElementById("consultPhone").value;
+            const date = document.getElementById("consultDate").value;
+            const service = document.getElementById("consultService").value;
+            const message = document.getElementById("consultMessage").value;
+            
+            if (!validateEmail(email)) {
+                const feedbackDiv = document.getElementById("consultationFormFeedback");
+                feedbackDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Пожалуйста, введите корректный email адрес.
+                    </div>
+                `;
+                return;
+            }
+            
             const feedbackDiv = document.getElementById("consultationFormFeedback");
             feedbackDiv.innerHTML = `
                 <div class="alert alert-success" role="alert">
-                    Вы записаны на консультацию.
+                    <strong>Спасибо, ${name}!</strong> Вы записаны на консультацию.<br>
+                    <strong>Тип консультации:</strong> ${service}<br>
+                    <strong>Дата:</strong> ${date}<br>
+                    <strong>Email:</strong> ${email}<br>
+                    <strong>Телефон:</strong> ${phone}<br>
+                    ${message ? `<strong>Ваше сообщение:</strong> ${message}` : ''}
                 </div>
             `;
             
@@ -52,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             setTimeout(() => {
                 feedbackDiv.innerHTML = "";
-            }, 5000);
+            }, 10000);
         });
     }
 
@@ -61,10 +88,22 @@ document.addEventListener("DOMContentLoaded", function () {
         newsletterForm.addEventListener("submit", function(e) {
             e.preventDefault();
             
+            const email = document.getElementById("newsletterEmail").value;
+            
+            if (!validateEmail(email)) {
+                const feedbackDiv = document.getElementById("newsletterFeedback");
+                feedbackDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Пожалуйста, введите корректный email адрес.
+                    </div>
+                `;
+                return;
+            }
+            
             const feedbackDiv = document.getElementById("newsletterFeedback");
             feedbackDiv.innerHTML = `
                 <div class="alert alert-success" role="alert">
-                    Спасибо. Вы подписаны на уведомления.
+                    Спасибо за подписку! На адрес <strong>${email}</strong> будут приходить уведомления.
                 </div>
             `;
             
@@ -72,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             setTimeout(() => {
                 feedbackDiv.innerHTML = "";
-            }, 5000);
+            }, 10000);
         });
     }
 
@@ -81,10 +120,28 @@ document.addEventListener("DOMContentLoaded", function () {
         contactForm.addEventListener("submit", function(e) {
             e.preventDefault();
             
+            const name = document.getElementById("contactName").value;
+            const email = document.getElementById("contactEmail").value;
+            const subject = document.getElementById("contactSubject").value;
+            const message = document.getElementById("contactMessage").value;
+            
+            if (!validateEmail(email)) {
+                const feedbackDiv = document.getElementById("contactFormFeedback");
+                feedbackDiv.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Пожалуйста, введите корректный email адрес.
+                    </div>
+                `;
+                return;
+            }
+            
             const feedbackDiv = document.getElementById("contactFormFeedback");
             feedbackDiv.innerHTML = `
                 <div class="alert alert-success" role="alert">
-                    Спасибо. Ваше сообщение отправлено.
+                    <strong>Спасибо, ${name}!</strong> Ваше сообщение отправлено.<br>
+                    <strong>Тема:</strong> ${subject}<br>
+                    <strong>Email:</strong> ${email}<br>
+                    <strong>Сообщение:</strong> ${message}
                 </div>
             `;
             
@@ -92,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             setTimeout(() => {
                 feedbackDiv.innerHTML = "";
-            }, 5000);
+            }, 10000);
         });
     }
 
